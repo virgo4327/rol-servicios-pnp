@@ -13,6 +13,22 @@ const FECHA_ACTUAL = new Date(); // Usa fecha real del sistema
 function App() {
   const turnos = generarTurnos();
   const [selectedTurno, setSelectedTurno] = useState<Turno | null>(null);
+  const [currentDate, setCurrentDate] = useState(new Date(2026, 2, 1)); // Inicia en Marzo 2026
+  
+  const currentMonth = currentDate.getMonth();
+  const currentYear = currentDate.getFullYear();
+
+  const handlePrevMonth = () => {
+    if (currentYear === 2026 && currentMonth > 0) { // Permitir hasta Enero
+      setCurrentDate(new Date(currentYear, currentMonth - 1, 1));
+    }
+  };
+
+  const handleNextMonth = () => {
+    if (currentYear === 2026 && currentMonth < 11) { // Permitir hasta Diciembre
+      setCurrentDate(new Date(currentYear, currentMonth + 1, 1));
+    }
+  };
   
   const proximoTurno = turnos.find(t => t.fecha >= FECHA_ACTUAL);
   const diasRestantes = proximoTurno 
@@ -30,7 +46,25 @@ function App() {
           <h1 className="text-3xl md:text-5xl font-bold text-white mb-2 flex items-center justify-center gap-3">
             🚔 ROL DE SERVICIO POLICIAL PNP
           </h1>
-          <p className="text-slate-300 text-lg">Marzo 2026</p>          
+          <div className="flex items-center justify-center gap-4 mt-4">
+            <button 
+              onClick={handlePrevMonth}
+              disabled={currentYear === 2026 && currentMonth === 0}
+              className="bg-pnp-medium hover:bg-slate-700 disabled:opacity-30 text-white px-4 py-2 rounded-lg transition-all"
+            >
+              ← Anterior
+            </button>
+            <p className="text-slate-300 text-xl font-semibold min-w-[200px]">
+              {format(currentDate, 'MMMM yyyy', { locale: es }).toUpperCase()}
+            </p>
+            <button 
+              onClick={handleNextMonth}
+              disabled={currentYear === 2026 && currentMonth === 11}
+              className="bg-pnp-medium hover:bg-slate-700 disabled:opacity-30 text-white px-4 py-2 rounded-lg transition-all"
+            >
+              Siguiente →
+            </button>
+          </div>
         </div>
         
         {proximoTurno && (
@@ -80,8 +114,8 @@ function App() {
             )}
             
             <Calendar
-              year={2026}
-              month={2}
+              year={currentYear}
+              month={currentMonth}
               turnos={turnos}
               onDayClick={handleDayClick}
             />
