@@ -1,4 +1,4 @@
-﻿import { format, getDaysInMonth, startOfMonth, getDay } from 'date-fns';
+import { format, getDaysInMonth, startOfMonth, getDay } from 'date-fns';
 import { es } from 'date-fns/locale';
 import type { Turno } from '../data/turnos';
 
@@ -13,6 +13,8 @@ export default function Calendar({ year, month, turnos, onDayClick }: CalendarPr
   const daysInMonth = getDaysInMonth(new Date(year, month));
   const firstDayOfMonth = startOfMonth(new Date(year, month));
   const startDay = getDay(firstDayOfMonth);
+  // Ajustar para que la semana empiece en lunes (0) en vez de domingo (0 en date-fns)
+  const adjustedStartDay = startDay === 0 ? 6 : startDay - 1;
   
   const monthName = format(new Date(year, month), 'MMMM yyyy', { locale: es }).toUpperCase();
   
@@ -32,7 +34,7 @@ export default function Calendar({ year, month, turnos, onDayClick }: CalendarPr
   
   const days = [];
   
-  for (let i = 0; i < startDay; i++) {
+  for (let i = 0; i < adjustedStartDay; i++) {
     days.push(<div key={'empty-' + i} className="aspect-square"></div>);
   }
   
