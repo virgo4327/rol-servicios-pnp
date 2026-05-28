@@ -15,7 +15,7 @@ export const personal: Persona[] = [
     apellido: "Fasanando",
     apellidoCompleto: "Fasanando Urari",
     grado: "S3 PNP",
-    color: "#60a5fa",
+    color: "#3b82f6",
     orden: 1
   },
   {
@@ -24,7 +24,7 @@ export const personal: Persona[] = [
     apellido: "Vela",
     apellidoCompleto: "Vela Chuquival",
     grado: "S3 PNP",
-    color: "#34d399",
+    color: "#22c55e",
     orden: 2
   },
   {
@@ -33,7 +33,7 @@ export const personal: Persona[] = [
     apellido: "Lozano",
     apellidoCompleto: "Lozano Amuño",
     grado: "S3 PNP",
-    color: "#fbbf24",
+    color: "#eab308",
     orden: 3
   },
   {
@@ -42,7 +42,7 @@ export const personal: Persona[] = [
     apellido: "López",
     apellidoCompleto: "López Saavedra",
     grado: "S2 PNP",
-    color: "#c084fc",
+    color: "#a855f7",
     orden: 4
   },
   {
@@ -51,7 +51,7 @@ export const personal: Persona[] = [
     apellido: "Solsol",
     apellidoCompleto: "Solsol Vela",
     grado: "S2 PNP",
-    color: "#f87171",
+    color: "#f97316",
     orden: 5
   },
   {
@@ -60,7 +60,7 @@ export const personal: Persona[] = [
     apellido: "Olivares",
     apellidoCompleto: "Olivares Leiva",
     grado: "S2 PNP",
-    color: "#a78bfa",
+    color: "#ec4899",
     orden: 6
   },
   {
@@ -69,7 +69,7 @@ export const personal: Persona[] = [
     apellido: "Cieza",
     apellidoCompleto: "Cieza Guillen",
     grado: "ST3 PNP",
-    color: "#fb923c",
+    color: "#ef4444",
     orden: 7
   }
 ];
