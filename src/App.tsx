@@ -1,42 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { personal, generarTurnos } from './data/turnos';
-import type { Turno } from './data/turnos';
-import { differenceInDays, format } from 'date-fns';
+import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import Calendar from './components/Calendar';
 import PersonCard from './components/PersonCard';
-import TurnDetails from './components/TurnDetails';
 
-// PARA PROBAR: Cambia solo los números de esta línea
-const FECHA_ACTUAL = new Date(); // Usa fecha real del sistema
+const FECHA_ACTUAL = new Date();
 
 function App() {
   const turnos = generarTurnos();
-  const [selectedTurno, setSelectedTurno] = useState<Turno | null>(null);
-  const [currentDate, setCurrentDate] = useState(new Date(2026, 2, 1)); // Inicia en Marzo 2026
   
+  // Iniciar en el mes actual
+  const [currentDate, setCurrentDate] = useState(new Date(FECHA_ACTUAL.getFullYear(), FECHA_ACTUAL.getMonth(), 1));
+   
   const currentMonth = currentDate.getMonth();
   const currentYear = currentDate.getFullYear();
 
+  // Navegar al mes actual al cargar
+  useEffect(() => {
+    setCurrentDate(new Date(FECHA_ACTUAL.getFullYear(), FECHA_ACTUAL.getMonth(), 1));
+  }, []);
+
   const handlePrevMonth = () => {
-    if (currentYear === 2026 && currentMonth > 0) { // Permitir hasta Enero
+    if (currentYear === 2026 && currentMonth > 0) {
       setCurrentDate(new Date(currentYear, currentMonth - 1, 1));
     }
   };
 
   const handleNextMonth = () => {
-    if (currentYear === 2026 && currentMonth < 11) { // Permitir hasta Diciembre
+    if (currentYear === 2026 && currentMonth < 11) {
       setCurrentDate(new Date(currentYear, currentMonth + 1, 1));
     }
-  };
-  
-  const proximoTurno = turnos.find(t => t.fecha >= FECHA_ACTUAL);
-  const diasRestantes = proximoTurno 
-    ? differenceInDays(proximoTurno.fecha, FECHA_ACTUAL)
-    : null;
-  
-  const handleDayClick = (turno: Turno | null) => {
-    setSelectedTurno(turno);
   };
   
   return (
@@ -67,33 +61,6 @@ function App() {
           </div>
         </div>
         
-        {proximoTurno && (
-          <div className="bg-gradient-to-r from-yellow-600 to-yellow-700 p-4 rounded-xl mb-8 shadow-xl">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-4">
-                <div
-                  className="w-8 h-8 rounded-full shadow-lg"
-                  style={{ backgroundColor: proximoTurno.persona.color }}
-                ></div>
-                <div>
-                  <p className="text-sm font-medium text-yellow-100">PRÓXIMO TURNO</p>
-                  <p className="text-xl font-bold text-white">
-                    {proximoTurno.persona.grado} {proximoTurno.persona.apellido}
-                  </p>
-                </div>
-              </div>
-              <div className="text-center md:text-right">
-                <p className="text-2xl font-bold text-white">
-                  {format(proximoTurno.fecha, "d 'de' MMMM", { locale: es })}
-                </p>
-                <p className="text-sm text-yellow-100">
-                  {diasRestantes === 0 ? 'HOY' : `En ${diasRestantes} día${diasRestantes !== 1 ? 's' : ''}`}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-        
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-1">
             <div className="bg-pnp-medium p-6 rounded-xl border border-pnp-border sticky top-4">
@@ -109,15 +76,10 @@ function App() {
           </div>
           
           <div className="lg:col-span-2 space-y-6">
-            {selectedTurno && (
-              <TurnDetails turno={selectedTurno} onClose={() => setSelectedTurno(null)} />
-            )}
-            
             <Calendar
               year={currentYear}
               month={currentMonth}
               turnos={turnos}
-              onDayClick={handleDayClick}
             />
           </div>
         </div>

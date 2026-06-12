@@ -1,4 +1,4 @@
-import { format, getDaysInMonth, startOfMonth, getDay } from 'date-fns';
+import { format, getDaysInMonth, startOfMonth, getDay, isToday } from 'date-fns';
 import { es } from 'date-fns/locale';
 import type { Turno } from '../data/turnos';
 
@@ -6,14 +6,12 @@ interface CalendarProps {
   year: number;
   month: number;
   turnos: Turno[];
-  onDayClick: (turno: Turno | null) => void;
 }
 
-export default function Calendar({ year, month, turnos, onDayClick }: CalendarProps) {
+export default function Calendar({ year, month, turnos }: CalendarProps) {
   const daysInMonth = getDaysInMonth(new Date(year, month));
   const firstDayOfMonth = startOfMonth(new Date(year, month));
   const startDay = getDay(firstDayOfMonth);
-  // Ajustar para que la semana empiece en lunes (0) en vez de domingo (0 en date-fns)
   const adjustedStartDay = startDay === 0 ? 6 : startDay - 1;
   
   const monthName = format(new Date(year, month), 'MMMM yyyy', { locale: es }).toUpperCase();
@@ -26,12 +24,6 @@ export default function Calendar({ year, month, turnos, onDayClick }: CalendarPr
     return turnosDelMes.find(t => t.fecha.getDate() === day);
   };
   
-  const handleDayClick = (turno: Turno | null) => {
-    if (turno) {
-      onDayClick(turno);
-    }
-  };
-  
   const days = [];
   
   for (let i = 0; i < adjustedStartDay; i++) {
@@ -41,23 +33,32 @@ export default function Calendar({ year, month, turnos, onDayClick }: CalendarPr
   for (let day = 1; day <= daysInMonth; day++) {
     const turno = getTurnoForDay(day);
     const hasTurno = !!turno;
+    const currentDate = new Date(year, month, day);
+    const isCurrentDay = isToday(currentDate);
+    
+    let dayClasses = 'aspect-square flex flex-col items-center justify-center rounded-lg border transition-all ';
+    
+    if (isCurrentDay) {
+      dayClasses += 'bg-yellow-600 border-yellow-400 ring-2 ring-yellow-300 shadow-lg shadow-yellow-500/50 ';
+    } else if (hasTurno) {
+      dayClasses += 'bg-slate-700 border-slate-600 ';
+    } else {
+      dayClasses += 'bg-slate-800/50 border-slate-700 text-slate-500 ';
+    }
     
     days.push(
-      <button
+      <div
         key={day}
-        type="button"
-        onClick={() => handleDayClick(turno || null)}
-        disabled={!hasTurno}
-        className={'aspect-square flex flex-col items-center justify-center rounded-lg border ' + (hasTurno ? 'bg-slate-700 border-slate-600 cursor-pointer hover:bg-slate-600 hover:scale-105 transition-all' : 'bg-slate-800/50 border-slate-700 text-slate-500 cursor-not-allowed')}
+        className={dayClasses}
       >
-        <span className="text-lg">{day}</span>
+        <span className={'text-lg ' + (isCurrentDay ? 'font-bold text-white' : '')}>{day}</span>
         {hasTurno && turno && (
           <div
             className="w-3 h-3 rounded-full mt-1 shadow-md"
             style={{ backgroundColor: turno.persona.color }}
           ></div>
         )}
-      </button>
+      </div>
     );
   }
   
