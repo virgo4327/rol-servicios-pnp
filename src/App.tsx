@@ -69,7 +69,7 @@ function App() {
               </h2>
               <div className="space-y-3">
                 {personal.map(p => (
-                  <PersonCard key={p.id} persona={p} turnos={turnos} />
+                  <PersonCard key={p.id} persona={p} />
                 ))}
               </div>
             </div>
