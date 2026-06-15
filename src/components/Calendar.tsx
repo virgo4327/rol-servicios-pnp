@@ -51,10 +51,10 @@ export default function Calendar({ year, month, turnos }: CalendarProps) {
         key={day}
         className={dayClasses}
       >
-        <span className={'text-lg ' + (isCurrentDay ? 'font-bold text-white' : '')}>{day}</span>
+        <span className={'text-sm sm:text-base md:text-lg ' + (isCurrentDay ? 'font-bold text-white' : '')}>{day}</span>
         {hasTurno && turno && (
           <div
-            className="w-3 h-3 rounded-full mt-1 shadow-md"
+            className="w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-3 md:h-3 rounded-full mt-0.5 sm:mt-1 shadow-md"
             style={{ backgroundColor: turno.persona.color }}
           ></div>
         )}
@@ -63,18 +63,18 @@ export default function Calendar({ year, month, turnos }: CalendarProps) {
   }
   
   return (
-    <div className="bg-slate-800 p-6 rounded-xl border border-slate-700">
-      <h3 className="text-xl font-bold text-white mb-4 text-center">{monthName}</h3>
+    <div className="bg-slate-800 p-3 sm:p-6 rounded-xl border border-slate-700">
+      <h3 className="text-lg sm:text-xl font-bold text-white mb-4 text-center">{monthName}</h3>
       
-      <div className="grid grid-cols-7 gap-2 mb-2">
+      <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-2">
         {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((day, i) => (
-          <div key={i} className="text-center text-sm font-semibold text-slate-400">
+          <div key={i} className="text-center text-xs sm:text-sm font-semibold text-slate-400">
             {day}
           </div>
         ))}
       </div>
       
-      <div className="grid grid-cols-7 gap-2">
+      <div className="grid grid-cols-7 gap-1 sm:gap-2">
         {days}
       </div>
     </div>
