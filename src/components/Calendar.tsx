@@ -52,10 +52,9 @@ export default function Calendar({ year, month, turnos }: CalendarProps) {
         className={dayClasses}
       >
         <span className={'text-sm sm:text-base md:text-lg ' + (isCurrentDay ? 'font-bold text-white' : '')}>{day}</span>
-        {hasTurno && turno && (
+        {hasTurno && (
           <div
-            className="w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-3 md:h-3 rounded-full mt-0.5 sm:mt-1 shadow-md"
-            style={{ backgroundColor: turno.persona.color }}
+            className="w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-3 md:h-3 rounded-full mt-0.5 sm:mt-1 shadow-md bg-red-500"
           ></div>
         )}
       </div>
